@@ -3,7 +3,6 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.sql.SQLOutput;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -22,7 +21,7 @@ public class TestTask4 {
         List<Integer> localBaseIterResults = new ArrayList<>();
         List<Integer> localOwnIterResults = new ArrayList<>();
 
-        BaseSolver baseSolver = new BaseSolver();
+        Solver baseSolver = new Solver();
         int baseResult = baseSolver.solve(mAndK.left, mAndK.right, copyOrders(orders), SortingStrategy.MinTD);
         localBaseIterResults.add(baseResult);
         for (int i = 0; i < mAndK.right; i++) {
@@ -74,7 +73,7 @@ public class TestTask4 {
 
         //System.out.println(orders);
 
-        BaseSolver baseSolver = new BaseSolver();
+        Solver baseSolver = new Solver();
         int baseResult = baseSolver.solve(mAndK.left, mAndK.right, copyOrders(orders), SortingStrategy.MinTD);
         localBaseIterResults.add(baseResult);
         for (int i = 0; i < mAndK.right; i++) {
@@ -127,7 +126,7 @@ public class TestTask4 {
 
         //System.out.println(orders);
 
-        BaseSolver baseSolver = new BaseSolver();
+        Solver baseSolver = new Solver();
         int baseResult = baseSolver.solve(mAndK.left, mAndK.right, copyOrders(orders), SortingStrategy.MinTD);
         localBaseIterResults.add(baseResult);
         for (int i = 0; i < mAndK.right; i++) {
@@ -180,7 +179,7 @@ public class TestTask4 {
 
         //System.out.println(orders);
 
-        BaseSolver baseSolver = new BaseSolver();
+        Solver baseSolver = new Solver();
         int baseResult = baseSolver.solve(mAndK.left, mAndK.right, copyOrders(orders), SortingStrategy.MinTD);
         localBaseIterResults.add(baseResult);
         for (int i = 0; i < mAndK.right; i++) {
@@ -233,7 +232,7 @@ public class TestTask4 {
 
         //System.out.println(orders);
 
-        BaseSolver baseSolver = new BaseSolver();
+        Solver baseSolver = new Solver();
         int baseResult = baseSolver.solve(mAndK.left, mAndK.right, copyOrders(orders), SortingStrategy.MinTD);
         localBaseIterResults.add(baseResult);
         for (int i = 0; i < mAndK.right; i++) {
@@ -286,7 +285,7 @@ public class TestTask4 {
 
         //System.out.println(orders);
 
-        BaseSolver baseSolver = new BaseSolver();
+        Solver baseSolver = new Solver();
         int baseResult = baseSolver.solve(mAndK.left, mAndK.right, copyOrders(orders), SortingStrategy.MinTD);
         localBaseIterResults.add(baseResult);
         for (int i = 0; i < mAndK.right; i++) {
@@ -339,7 +338,7 @@ public class TestTask4 {
 
         //System.out.println(orders);
 
-        BaseSolver baseSolver = new BaseSolver();
+        Solver baseSolver = new Solver();
         int baseResult = baseSolver.solve(mAndK.left, mAndK.right, copyOrders(orders), SortingStrategy.MinTD);
         localBaseIterResults.add(baseResult);
         for (int i = 0; i < mAndK.right; i++) {
@@ -395,7 +394,7 @@ public class TestTask4 {
 
         //System.out.println(orders);
 
-        BaseSolver baseSolver = new BaseSolver();
+        Solver baseSolver = new Solver();
         int baseResult = baseSolver.solve(mAndK.left, mAndK.right, copyOrders(orders), SortingStrategy.MinTD);
         localBaseIterResults.add(baseResult);
         for (int i = 0; i < mAndK.right; i++) {
@@ -449,7 +448,7 @@ public class TestTask4 {
 
         //System.out.println(orders);
 
-        BaseSolver baseSolver = new BaseSolver();
+        Solver baseSolver = new Solver();
         int baseResult = baseSolver.solve(mAndK.left, mAndK.right, copyOrders(orders), SortingStrategy.MinTD);
         localBaseIterResults.add(baseResult);
         for (int i = 0; i < mAndK.right; i++) {
@@ -502,7 +501,7 @@ public class TestTask4 {
 
         //System.out.println(orders);
 
-        BaseSolver baseSolver = new BaseSolver();
+        Solver baseSolver = new Solver();
         int baseResult = baseSolver.solve(mAndK.left, mAndK.right, copyOrders(orders), SortingStrategy.MinTD);
         localBaseIterResults.add(baseResult);
         for (int i = 0; i < mAndK.right; i++) {

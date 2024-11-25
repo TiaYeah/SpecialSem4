@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class BaseSolver {
+public class Solver {
     private Map<Integer, ResourceState> resourcesState = new HashMap<>();
     TreeSet<Integer> events = new TreeSet<>();
     private List<Integer> previousDelays = new ArrayList<>();
@@ -11,7 +11,7 @@ public class BaseSolver {
         }
 
         for (int i = 1; i <= m; i++) {
-            resourcesState.put(i, new ResourceState(-1, null)); // -1 - свободен иначе - время освобождения
+            resourcesState.put(i, new ResourceState(-1, null)); // -1 - свободен, иначе - время освобождения
         }
     }
 
@@ -20,7 +20,7 @@ public class BaseSolver {
 
         while (!events.isEmpty()) {
             List<Operation> front;
-            //new Comparator<Integer>
+
             while (!(front = frontalAlgorithm(events.getFirst(), orders)).isEmpty()) {
 
                 frontSort(front, orders, strategy, events.getFirst());
@@ -30,10 +30,8 @@ public class BaseSolver {
                 Integer resourceFreeTime = events.getFirst() + orderOfOperation.getDuration().get(operationToStart.getNumber());
                 events.add(resourceFreeTime);
 
-                //orderOfOperation.getEdges().remove(operationToStart.getNumber());
                 resourcesState.put(orderOfOperation.getResources().get(operationToStart.getNumber()), new ResourceState(resourceFreeTime, operationToStart));
 
-                //System.out.println(resourcesState);
                 if (front.size() == 1) {
                     break;
                 }
@@ -49,7 +47,6 @@ public class BaseSolver {
             sumOfDelay += delay;
         }
 
-        //System.out.println("Заказы " + orders);
         return sumOfDelay;
     }
 
@@ -59,7 +56,6 @@ public class BaseSolver {
 
         while (!events.isEmpty()) {
             List<Operation> front;
-            //new Comparator<Integer>
             while (!(front = frontalAlgorithm(events.getFirst(), orders)).isEmpty()) {
 
                 frontSort(front, orders, strategy, events.getFirst());
@@ -69,13 +65,8 @@ public class BaseSolver {
                 Integer resourceFreeTime = events.getFirst() + orderOfOperation.getDuration().get(operationToStart.getNumber());
                 events.add(resourceFreeTime);
 
-                //orderOfOperation.getEdges().remove(operationToStart.getNumber());
                 resourcesState.put(orderOfOperation.getResources().get(operationToStart.getNumber()), new ResourceState(resourceFreeTime, operationToStart));
 
-                //System.out.println(resourcesState);
-                if (front.size() == 1) {
-                    break;
-                }
             }
             events.removeFirst();
         }
@@ -88,7 +79,6 @@ public class BaseSolver {
             delays.add(delay);
         }
 
-        //System.out.println("Заказы " + orders);
         return delays;
     }
 
@@ -107,32 +97,19 @@ public class BaseSolver {
                 front.set(i, newFront.get(i));
             }
         } else if (strategy == SortingStrategy.BiggestNextVertexes) {
-            Map<Integer, Integer> remainingOperations = new HashMap<>();
-            for (int i = 0; i < orders.size(); i++) {
-                remainingOperations.put(i, orders.get(i).getVertexes().size());
-            }
-
-
             //front.sort(Comparator.comparingInt(op -> orders.get(op.getOrderId()).getDirectiveTime() - (currentTime + orders.get(op.getOrderId()).getDuration().get(op.getNumber()))));
             //front.sort(Comparator.comparingInt(op -> remainingOperations.get(op.getOrderId())));
 
-            //double k1 = 0.4, k2 = 0.3,  k3 = 1 - k1 - k2; // на 0.75 и сортировке k2 через остаток операций есть улучшение
-
-
-            double k1 = 0.5, k2 = 1 - k1; // dt + remain 0,5 0,5 маленькое улучшение 075 025 лучше 0978
+            double k1 = 0.5, k2 = 1 - k1;
             front.sort((op1, op2) -> {
                 List<Integer> edges1 = orders.get(op1.getOrderId()).getEdges().get(op1.getNumber());
                 List<Integer> edges2 = orders.get(op2.getOrderId()).getEdges().get(op2.getNumber());
 
                 double priority1 = k1 * orders.get(op1.getOrderId()).getDirectiveTime()
                         + -k2 * (edges1 == null ? 0 : edges1.size());
-                       // + k2 *
-                                 //+ k2 * orders.get(op1.getOrderId()).getDuration().get(op1.getNumber())
-                                 //+ k2 * (remainingOperations.get(op1.getOrderId()));
+
                 double priority2 = k1 * orders.get(op2.getOrderId()).getDirectiveTime()
-//                                 //+ k2 * orders.get(op1.getOrderId()).getDuration().get(op1.getNumber())
                         + -k2 * (edges2 == null ? 0 : edges2.size());
-                                 //+ k2 * (remainingOperations.get(op2.getOrderId()));
 
                 return Double.compare(priority1, priority2);
             });
@@ -142,7 +119,7 @@ public class BaseSolver {
                 remainingOperations.put(i, orders.get(i).getVertexes().size());
             }
 
-            double k1 = 0.8, k2 = 1 - k1; // пока 0.8 деление + пути разогнал до 0.955
+            double k1 = 0.8, k2 = 1 - k1;
 
             front.sort((op1, op2) -> {
                 List<Integer> edges1 = orders.get(op1.getOrderId()).getEdges().get(op1.getNumber());
@@ -153,20 +130,13 @@ public class BaseSolver {
                 double priority2 = -1 * k1 * previousDelays.get(op2.getOrderId()) / remainingOperations.get(op2.getOrderId())
                         + -k2 * (edges2 == null ? 0 : edges2.size());
 
-                //Иногда сработает
-                //double priority1 =  -1 * ((double) previousDelays.get(op1.getOrderId()) / remainingOperations.get(op1.getOrderId()));
-
-                //double priority2 = -1 * ((double) previousDelays.get(op2.getOrderId()) / remainingOperations.get(op2.getOrderId()));
                 return Double.compare(priority1, priority2);
             });
-
-            //front.sort((op1, op2) -> -1 * (previousDelays.get(op1.getOrderId()) - previousDelays.get(op2.getOrderId())));
         }
     }
 
     public List<Operation> frontalAlgorithm(int time, List<Order> orders) {
         List<Operation> result = new ArrayList<>();
-        //Map<Integer, ArrayList<Integer>> reverse
         for (Map.Entry<Integer, ResourceState> entry : resourcesState.entrySet()) {
             ResourceState entryResourceState = entry.getValue();
             if (entryResourceState.getFreeTime() == time) {
@@ -186,7 +156,7 @@ public class BaseSolver {
 
         for (int i = 0; i < orders.size(); i++) {
             Order currentOrder = orders.get(i);
-            boolean readyToStart = true;
+            boolean readyToStart;
 
             for (int j = 0; j < currentOrder.getVertexes().size(); j++) {
                 readyToStart = true;
